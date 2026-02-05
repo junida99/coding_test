@@ -12,15 +12,15 @@ v1, v2 = map(int, sys.stdin.readline().split())
 
 def dijkstra(graph, start, end):
     weight_list = [float("inf") for i in range(n+1)]
-    priority_queue = [(start, 0)]
+    priority_queue = [(0, start)]
     weight_list[start] = 0
     while priority_queue:
-        curr, curr_weight = heapq.heappop(priority_queue)
+        curr_weight, curr = heapq.heappop(priority_queue)
         for node, weight in graph[curr]:
             total_weight = curr_weight + weight
             if total_weight < weight_list[node]:
                 weight_list[node] = total_weight
-                priority_queue.append((node, total_weight))
+                heapq.heappush(priority_queue, (total_weight, node))
     return weight_list[end]
 
 first = dijkstra(graph, 1, v1) + dijkstra(graph, v1, v2) + dijkstra(graph, v2, n)
