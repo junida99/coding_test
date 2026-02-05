@@ -16,6 +16,8 @@ def dijkstra(graph, start, end):
     weight_list[start] = 0
     while priority_queue:
         curr_weight, curr = heapq.heappop(priority_queue)
+        if curr_weight > weight_list[curr]:
+            continue
         for node, weight in graph[curr]:
             total_weight = curr_weight + weight
             if total_weight < weight_list[node]:
