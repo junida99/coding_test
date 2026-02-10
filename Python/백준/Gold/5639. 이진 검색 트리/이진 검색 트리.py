@@ -1,26 +1,21 @@
 import sys
-sys.setrecursionlimit(10**6)
+sys.setrecursionlimit(20000)
+
 preorder = list(map(int, sys.stdin.readlines()))
 
-def postorder(li, start_index, end_index):
-    if len(li) == 0:
+def postorder(start, end):
+    if start >= end:
         return
-    root = li[start_index]
-    if len(li) == 1:
-        print(root)
-        return
-    left = list()
-    right = list()
-    curr = start_index + 1
-    while curr < end_index and root > li[curr]:
-        left.append(li[curr])
-        curr += 1
-    while curr < end_index:
-        right.append(li[curr])
-        curr += 1
-
-    postorder(left, 0, len(left))
-    postorder(right, 0, len(right))
+    
+    root = preorder[start]
+    mid = end
+    for idx in range(start+1, end):
+        if preorder[idx] > root:
+            mid = idx
+            break
+    
+    postorder(start+1, mid)
+    postorder(mid, end)
     print(root)
 
-postorder(preorder, 0, len(preorder))
+postorder(0, len(preorder))
