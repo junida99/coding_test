@@ -2,11 +2,13 @@ import sys, heapq
 
 n, m, x = map(int, sys.stdin.readline().split())
 graph = [[] for _ in range(n+1)]
+reversed_graph = [[] for _ in range(n+1)]
 for i in range(m):
     start, end, time = map(int, sys.stdin.readline().split())
     graph[start].append((end, time))
+    reversed_graph[end].append((start, time))
 
-def dijkstra(start):
+def dijkstra(graph, start):
     priority_queue = [(0, start)]
     weight = [float('inf') for _ in range(n+1)]
     weight[start] = 0
@@ -22,11 +24,9 @@ def dijkstra(start):
                 weight[nxt] = total_w
     return weight
 
-back = dijkstra(x)
+come = dijkstra(reversed_graph, x)
+back = dijkstra(graph, x)
 max_time = 0
 for i in range(1, n+1):
-    come = dijkstra(i)
-    total_time = come[x] + back[i]
-    max_time = max(max_time, total_time)
-
+    max_time = max(come[i] + back[i], max_time)
 print(max_time)
